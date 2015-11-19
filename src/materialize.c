@@ -4,6 +4,21 @@ static Window *s_main_window;
 static TextLayer *s_time_layer;
 static GFont s_font;
 
+static void update_time(){
+  time_t temp = time(NULL);
+  struct tm *tick_time = localtime(&temp);
+
+  static char s_buffer[8];
+  strftime(s_buffer, sizeof(s_buffer), "%I:%M", tick_time);
+
+  text_layer_set_text(s_time_layer, s_buffer);
+
+}
+
+static void tick_handler(struct tm *tick_time, TimeUnits units_changed){
+  update_time();
+}
+
 static void main_window_load(Window *window){
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_bounds(window_layer);
@@ -36,9 +51,13 @@ static void init(){
   });
 
   window_stack_push(s_main_window, true);
+
+  tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
+  update_time();
 }
 
 static void deinit(){
+  tick_timer_service_unsubscribe();
   window_destroy(s_main_window);
 }
 
