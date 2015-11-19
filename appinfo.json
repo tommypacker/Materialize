@@ -1,0 +1,25 @@
+{
+  "uuid": "89189efd-2c90-4138-a33c-b90d175e1769",
+  "shortName": "materialize",
+  "longName": "materialize",
+  "companyName": "MakeAwesomeHappen",
+  "versionLabel": "1.0",
+  "sdkVersion": "3",
+  "targetPlatforms": ["aplite", "basalt", "chalk"],
+  "watchapp": {
+    "watchface": true
+  },
+  "appKeys": {
+    "dummy": 0
+  },
+  "resources": {
+    "media": [
+      {
+        "type" : "font",
+        "name": "MINIMAL_FONT_DOS_48",
+        "file": "fonts/minimal.otf",
+        "compaitbility": "2.7"
+      }
+    ]
+  }
+}
