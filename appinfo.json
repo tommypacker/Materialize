@@ -16,8 +16,8 @@
     "media": [
       {
         "type" : "font",
-        "name": "MINIMAL_FONT_DOS_48",
-        "file": "fonts/minimal.otf",
+        "name": "ROBOTO_REGULAR_DOS_48",
+        "file": "fonts/Roboto-Regular.ttf",
         "compaitbility": "2.7"
       }
     ]

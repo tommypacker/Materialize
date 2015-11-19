@@ -11,7 +11,7 @@ static void main_window_load(Window *window){
   s_time_layer = text_layer_create(GRect(0, PBL_IF_ROUND_ELSE(58,52), bounds.size.w, 50));
 
   //Load custom minimal font
-  s_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_MINIMAL_FONT_DOS_48));
+  s_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_ROBOTO_REGULAR_DOS_48));
 
   text_layer_set_background_color(s_time_layer, GColorClear);
   text_layer_set_text_color(s_time_layer, GColorBlack);
