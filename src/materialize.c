@@ -28,8 +28,9 @@ static void main_window_load(Window *window){
   //Load custom minimal font
   s_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_ROBOTO_REGULAR_DOS_48));
 
+  window_set_background_color(s_main_window, GColorVividCerulean);
   text_layer_set_background_color(s_time_layer, GColorClear);
-  text_layer_set_text_color(s_time_layer, GColorBlack);
+  text_layer_set_text_color(s_time_layer, GColorWhite);
   text_layer_set_text(s_time_layer, "00:00");
   text_layer_set_font(s_time_layer, s_font);
   text_layer_set_text_alignment(s_time_layer, GTextAlignmentCenter);
