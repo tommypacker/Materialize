@@ -20,6 +20,12 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed){
   update_time();
 }
 
+static void battery_handler(BatteryChargeState new_state){
+  static char s_battery_buffer[16];
+  snprintf(s_battery_buffer, sizeof(s_battery_buffer), "%d Percent", new_state.charge_percent);
+  text_layer_set_text(s_status_bar, s_battery_buffer);
+}
+
 static void main_window_load(Window *window){
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_bounds(window_layer);
@@ -43,12 +49,14 @@ static void main_window_load(Window *window){
   //Set status bar layer attributes
   text_layer_set_background_color(s_status_bar, GColorClear);
   text_layer_set_text_color(s_status_bar, GColorWhite);
-  text_layer_set_text(s_status_bar, "Battery status");
+  //text_layer_set_text(s_status_bar, "Battery status");
   text_layer_set_font(s_status_bar, s_font_small);
   text_layer_set_text_alignment(s_status_bar, GTextAlignmentCenter);
 
   layer_add_child(window_layer, text_layer_get_layer(s_time_layer));
   layer_add_child(window_layer, text_layer_get_layer(s_status_bar));
+
+  battery_handler(battery_state_service_peek());
 }
 
 static void main_window_unload(Window *window){
@@ -69,6 +77,8 @@ static void init(){
 
   tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
   update_time();
+
+  battery_state_service_subscribe(battery_handler);
 }
 
 static void deinit(){
