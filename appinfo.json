@@ -19,6 +19,11 @@
         "name": "ROBOTO_REGULAR_DOS_48",
         "file": "fonts/Roboto-Regular.ttf",
         "compaitbility": "2.7"
+      },
+      {
+        "type": "font",
+        "name": "ROBOTO_REGULAR_DOS_12",
+        "file": "fonts/Roboto-Regular.ttf"
       }
     ]
   }
