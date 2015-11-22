@@ -31,6 +31,7 @@ static void battery_handler(BatteryChargeState new_state){
 static void main_window_load(Window *window){
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_bounds(window_layer);
+  GRect weather_bounds = GRect(0,PBL_IF_ROUND_ELSE(52,105), bounds.size.w, 50);
 
   s_status_bar = text_layer_create(GRect(0, PBL_IF_ROUND_ELSE(52,5), bounds.size.w, 50));
   s_time_layer = text_layer_create(GRect(0, PBL_IF_ROUND_ELSE(58,35), bounds.size.w, 50));
@@ -40,7 +41,7 @@ static void main_window_load(Window *window){
   s_font_small = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_ROBOTO_REGULAR_DOS_12));
 
   s_weather_bitmap = gbitmap_create_with_resource(RESOURCE_ID_WEATHER_ICON_SUNNY);
-  s_weather_icon = bitmap_layer_create(bounds);
+  s_weather_icon = bitmap_layer_create(weather_bounds);
 
   window_set_background_color(s_main_window, GColorVividCerulean);
 
