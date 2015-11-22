@@ -3,6 +3,8 @@
 static Window *s_main_window;
 static TextLayer *s_time_layer;
 static TextLayer *s_status_bar;
+static BitmapLayer *s_weather_icon;
+static GBitmap *s_weather_bitmap;
 static GFont s_font;
 static GFont s_font_small;
 
@@ -31,11 +33,14 @@ static void main_window_load(Window *window){
   GRect bounds = layer_get_bounds(window_layer);
 
   s_status_bar = text_layer_create(GRect(0, PBL_IF_ROUND_ELSE(52,5), bounds.size.w, 50));
-  s_time_layer = text_layer_create(GRect(0, PBL_IF_ROUND_ELSE(58,45), bounds.size.w, 50));
+  s_time_layer = text_layer_create(GRect(0, PBL_IF_ROUND_ELSE(58,35), bounds.size.w, 50));
 
   //Load custom minimal font
   s_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_ROBOTO_REGULAR_DOS_48));
   s_font_small = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_ROBOTO_REGULAR_DOS_12));
+
+  s_weather_bitmap = gbitmap_create_with_resource(RESOURCE_ID_WEATHER_ICON_SUNNY);
+  s_weather_icon = bitmap_layer_create(bounds);
 
   window_set_background_color(s_main_window, GColorVividCerulean);
 
@@ -53,8 +58,13 @@ static void main_window_load(Window *window){
   text_layer_set_font(s_status_bar, s_font_small);
   text_layer_set_text_alignment(s_status_bar, GTextAlignmentCenter);
 
+  bitmap_layer_set_alignment(s_weather_icon, GAlignCenter);
+  bitmap_layer_set_background_color(s_weather_icon, GColorClear);
+
   layer_add_child(window_layer, text_layer_get_layer(s_time_layer));
   layer_add_child(window_layer, text_layer_get_layer(s_status_bar));
+  bitmap_layer_set_bitmap(s_weather_icon, s_weather_bitmap);
+  layer_add_child(window_layer, bitmap_layer_get_layer(s_weather_icon));
 
   battery_handler(battery_state_service_peek());
 }
@@ -62,6 +72,8 @@ static void main_window_load(Window *window){
 static void main_window_unload(Window *window){
   text_layer_destroy(s_time_layer);
   text_layer_destroy(s_status_bar);
+  gbitmap_destroy(s_weather_bitmap);
+  bitmap_layer_destroy(s_weather_icon);
   fonts_unload_custom_font(s_font);
 }
 

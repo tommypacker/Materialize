@@ -24,6 +24,11 @@
         "type": "font",
         "name": "ROBOTO_REGULAR_DOS_12",
         "file": "fonts/Roboto-Regular.ttf"
+      },
+      {
+        "type": "png",
+        "name": "WEATHER_ICON_SUNNY",
+        "file": "images/sunny.png"
       }
     ]
   }
