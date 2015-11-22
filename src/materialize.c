@@ -31,10 +31,10 @@ static void battery_handler(BatteryChargeState new_state){
 static void main_window_load(Window *window){
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_bounds(window_layer);
-  GRect weather_bounds = GRect(0,PBL_IF_ROUND_ELSE(52,105), bounds.size.w, 50);
+  GRect weather_bounds = GRect(0,PBL_IF_ROUND_ELSE(115,105), bounds.size.w, 50);
 
-  s_status_bar = text_layer_create(GRect(0, PBL_IF_ROUND_ELSE(52,5), bounds.size.w, 50));
-  s_time_layer = text_layer_create(GRect(0, PBL_IF_ROUND_ELSE(58,35), bounds.size.w, 50));
+  s_status_bar = text_layer_create(GRect(0, PBL_IF_ROUND_ELSE(18,5), bounds.size.w, 50));
+  s_time_layer = text_layer_create(GRect(0, PBL_IF_ROUND_ELSE(43,35), bounds.size.w, 50));
 
   //Load custom minimal font
   s_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_ROBOTO_REGULAR_DOS_48));
