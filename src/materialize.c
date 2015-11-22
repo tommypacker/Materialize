@@ -1,4 +1,6 @@
 #include <pebble.h>
+#define KEY_TEMPERATURE 0
+#define KEY_CONDITIONS 1
 
 static Window *s_main_window;
 static TextLayer *s_time_layer;
@@ -7,6 +9,9 @@ static BitmapLayer *s_weather_icon;
 static GBitmap *s_weather_bitmap;
 static GFont s_font;
 static GFont s_font_small;
+static int temperature;
+
+static uint32_t getImageId(int temp);
 
 static void update_time(){
   time_t temp = time(NULL);
@@ -40,7 +45,7 @@ static void main_window_load(Window *window){
   s_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_ROBOTO_REGULAR_DOS_48));
   s_font_small = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_ROBOTO_REGULAR_DOS_12));
 
-  s_weather_bitmap = gbitmap_create_with_resource(RESOURCE_ID_WEATHER_ICON_SUNNY);
+  s_weather_bitmap = gbitmap_create_with_resource(getImageId(temperature));
   s_weather_icon = bitmap_layer_create(weather_bounds);
 
   window_set_background_color(s_main_window, GColorVividCerulean);
@@ -71,6 +76,13 @@ static void main_window_load(Window *window){
   battery_handler(battery_state_service_peek());
 }
 
+static uint32_t getImageId(int temp){
+  if(temp < 50)
+    return RESOURCE_ID_WEATHER_ICON_CLOUDY;
+  else
+    return RESOURCE_ID_WEATHER_ICON_SUNNY;
+}
+
 static void main_window_unload(Window *window){
   text_layer_destroy(s_time_layer);
   text_layer_destroy(s_status_bar);
@@ -79,8 +91,33 @@ static void main_window_unload(Window *window){
   fonts_unload_custom_font(s_font);
 }
 
+static void inbox_received_callback(DictionaryIterator *iterator, void *context){
+  Tuple *temp_tuple = dict_find(iterator, KEY_TEMPERATURE);
+  if(temp_tuple){
+    temperature = (int)temp_tuple->value->int32;
+  }
+}
+
+static void inbox_dropped_callback(AppMessageResult reason, void *context){
+  APP_LOG(APP_LOG_LEVEL_ERROR, "Message dropped!");
+}
+
+static void outbox_failed_callback(DictionaryIterator *iterator, AppMessageResult reason, void *context){
+  APP_LOG(APP_LOG_LEVEL_ERROR, "Outbox send failed!");
+}
+
+static void outbox_sent_callback(DictionaryIterator *iterator, void *context){
+  APP_LOG(APP_LOG_LEVEL_INFO, "Outbox send success!"); 
+}
+
 static void init(){
   s_main_window = window_create();
+
+  app_message_register_inbox_received(inbox_received_callback);
+  app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
+  app_message_register_inbox_dropped(inbox_dropped_callback);
+  app_message_register_outbox_failed(outbox_failed_callback);
+  app_message_register_outbox_sent(outbox_sent_callback);
 
   window_set_window_handlers(s_main_window, (WindowHandlers){
     .load = main_window_load,

@@ -29,6 +29,11 @@
         "type": "png",
         "name": "WEATHER_ICON_SUNNY",
         "file": "images/sunny.png"
+      },
+      {
+        "type": "png",
+        "name": "WEATHER_ICON_CLOUDY",
+        "file": "images/cloudy.png"
       }
     ]
   }
