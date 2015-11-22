@@ -60,6 +60,7 @@ static void main_window_load(Window *window){
 
   bitmap_layer_set_alignment(s_weather_icon, GAlignCenter);
   bitmap_layer_set_background_color(s_weather_icon, GColorClear);
+  bitmap_layer_set_compositing_mode(s_weather_icon, GCompOpSet);
 
   layer_add_child(window_layer, text_layer_get_layer(s_time_layer));
   layer_add_child(window_layer, text_layer_get_layer(s_status_bar));
